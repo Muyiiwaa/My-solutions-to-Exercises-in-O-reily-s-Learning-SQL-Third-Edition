@@ -211,3 +211,75 @@ Rework the query from Exercise 9-1 using a correlated subquery against the categ
 and film_category tables to achieve the same results.
 */
 
+
+
+
+
+
+
+
+/*
+Exercise 9-3
+Join the following query to a subquery against the film_actor table to show the level
+of each actor:
+SELECT 'Hollywood Star' level, 30 min_roles, 99999 max_roles
+UNION ALL
+SELECT 'Prolific Actor' level, 20 min_roles, 29 max_roles
+UNION ALL
+SELECT 'Newcomer' level, 1 min_roles, 19 max_roles
+*/
+
+/*
+Exercise 10-1
+Using the following table definitions and data, write a query that returns each cus‐
+tomer name along with their total payments:
+ Customer:
+Customer_id Name
+----------- ---------------
+1 John Smith
+2 Kathy Jones
+3 Greg Oliver
+ Payment:
+Payment_id Customer_id Amount
+---------- ----------- --------
+101 1 8.99
+102 3 4.99
+103 1 7.99
+Include all customers, even if no payment records exist for that customer
+
+*/
+-- since the question is not very clear, the query above returns total payments ever made by each cust.
+
+select c.Name, sum(p.amount) as `total payments`
+from Customer c
+join Payment p on c.Customer_id = p.Customer_id
+GROUP BY c.Name
+
+-- the query below just joins customer name and their payments whether or not they've ever made payment
+
+select c.Name, sum(p.amount) as `total payments`
+from Customer c
+right join Payment p on c.Customer_id = p.Customer_id
+GROUP BY c.Name
+
+
+/*
+*/
+
+/*
+*/
+
+/*
+*/
+
+/*
+*/
+
+/*
+*/
+
+/*
+*/
+
+/*
+*/

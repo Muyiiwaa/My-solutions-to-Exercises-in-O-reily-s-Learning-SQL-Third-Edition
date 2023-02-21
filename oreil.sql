@@ -264,9 +264,23 @@ GROUP BY c.Name
 
 
 /*
+Exercise 10-2
+Reformulate your query from Exercise 10-1 to use the other outer join type (e.g., if
+you used a left outer join in Exercise 10-1, use a right outer join this time) such that
+the results are identical to Exercise 10-1.
+
 */
 
+select sum(p.amount) as `total payments`, c.Name
+from payment p
+left join Customer c on c.Customer_id = p.Customer_id
+GROUP BY c.Name
+
+
 /*
+
+
+
 */
 
 /*

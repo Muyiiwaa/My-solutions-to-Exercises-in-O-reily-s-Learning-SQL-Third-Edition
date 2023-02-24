@@ -194,22 +194,160 @@ order by contactname;
 
 
 /*
-21. Create a report that shows the City, CompanyName, ContactName of customers from cities that has letter L in the name
+21. Create a report that shows the City, CompanyName, ContactName of customers from 
+cities that has letter L in the name
 sorted by ContactName.*/
 
+select city, CompanyName, contactname
+from customers
+where city like '%L%';
+
+/*
+22. 
+Create a report that shows the FirstName,
+ LastName, BirthDate of employees born in the 1950s.*/
+
+select firstname, lastname,Birthdate
+from employees
+where date_format(BirthDate, '%Y') = '1950';
+
+ /*
+23. Create a report that shows the FirstName, LastName, 
+the year of Birthdate as birth year from the employees table.*/
+
+select firstname, lastname, date_format(BirthDate, '%y') as `Birth Year`
+from employees;
+
+/*
+24. Create a report showing OrderID, total number of Order ID as 
+NumberofOrders from the orderdetails table grouped by*/
+
+select orderid, count(orderid) as `Number of orders`
+from orders
+GROUP BY orderid;
+
+/*
+OrderID and sorted by NumberofOrders in descending order. 
+HINT: you will need to use a Groupby statement.*/
+
+select orderid, count(orderid) as `Number of orders`
+from orders
+GROUP BY orderid
+order by `Number of orders` desc;
+
+/*
+25. Create a report that shows the SupplierID, ProductName, 
+CompanyName from all product Supplied by Exotic Liquids,
+Specialty Biscuits, Ltd., Escargots Nouveaux sorted by the supplier ID*/
+
+select p.SupplierID, p.productname, s.CompanyName
+from suppliers s
+join products p on s.SupplierID = p.SupplierID
+where s.CompanyName in ('Exotic Liquids', 'Specialty Biscuits, Ltd.','Escargots Nouveaux')
+order by SupplierID;
 
 
-22. Create a report that shows the FirstName, LastName, BirthDate of employees born in the 1950s.
-23. Create a report that shows the FirstName, LastName, the year of Birthdate as birth year from the employees table.
-24. Create a report showing OrderID, total number of Order ID as NumberofOrders from the orderdetails table grouped by
-OrderID and sorted by NumberofOrders in descending order. HINT: you will need to use a Groupby statement.
-25. Create a report that shows the SupplierID, ProductName, CompanyName from all product Supplied by Exotic Liquids,
-Specialty Biscuits, Ltd., Escargots Nouveaux sorted by the supplier ID
-26. Create a report that shows the ShipPostalCode, OrderID, OrderDate, RequiredDate, ShippedDate, ShipAddress of all orders
-with ShipPostalCode beginning with "98124".
-27. Create a report that shows the ContactName, ContactTitle, CompanyName of customers that the has no "Sales" in their
-ContactTitle.
-28. Create a report that shows the LastName, FirstName, City of employees in cities other "Seattle";
-29. Create a report that shows the CompanyName, ContactTitle, City, Country of all customers in any city in Mexico or other
-cities in Spain other than Madrid.
-30. Create a select statement that outputs the following:
+/*
+26. Create a report that shows the ShipPostalCode, OrderID, OrderDate, 
+RequiredDate, ShippedDate, ShipAddress of all orders
+with ShipPostalCode beginning with "98124".*/
+
+
+select ShipPostalCode, orderid, OrderDate, RequiredDate, ShippedDate, ShipAddress
+from orders
+where ShipPostalCode like '98124%';
+
+
+/*
+27. Create a report that shows the ContactName, ContactTitle, 
+CompanyName of customers that the has no "Sales" in their
+ContactTitle.*/
+
+select contactname, ContactTitle, CompanyName
+from customers
+where not ContactTitle like '%sales%';
+
+/*
+28. Create a report that shows the LastName, FirstName, City of 
+employees in cities other than "Seattle";*/
+
+select lastname, firstname, city
+from employees
+where not city = 'Seattle'; 
+
+/*
+29. Create a report that shows the CompanyName, ContactTitle, 
+City, Country of all customers in any city in Mexico or other
+cities in Spain other than Madrid.*/
+
+select ContactTitle, CompanyName, city, country
+from customers
+where (not city = 'madrid' and country = 'spain') or (country = 'mexico' ); 
+
+/*
+30. Create a select statement that outputs the following:*/
+
+select concat(firstname,' ', lastname,' ', 'can be reached at x', ' ',postalcode) as contactinfo
+from employees;
+
+/*
+31. Create a report that shows the ContactName of all customers that do not have letter 
+A as the second alphabet in their
+Contactname.*/
+
+/*
+32. Create a report that shows the average UnitPrice rounded to the next whole number, 
+total price of UnitsInStock and
+maximum number of orders from the products table. 
+All saved as AveragePrice, TotalStock and MaxOrder respectively.*/
+
+/*
+33. Create a report that shows the SupplierID, CompanyName, CategoryName,
+ ProductName and UnitPrice from the products,
+suppliers and categories table.*/
+
+/*
+34. Create a report that shows the CustomerID, sum of Freight, 
+from the orders table with sum of freight greater $200, grouped
+by CustomerID. HINT: you will need to use a Groupby and a Having statement.*/
+
+/*
+35. Create a report that shows the OrderID ContactName, UnitPrice, Quantity, Discount from the order details, orders and
+customers table with discount given on every purchase.*/
+
+/*
+36. Create a report that shows the EmployeeID, the LastName and FirstName as employee, 
+and the LastName and FirstName of
+who they report to as manager from the employees table sorted by Employee ID. HINT: This is a SelfJoin.*/
+
+/*
+37. Create a report that shows the average, minimum and maximum UnitPrice
+ of all products as AveragePrice, MinimumPrice
+and MaximumPrice respectively.*/
+
+/*
+38. Create a view named CustomerInfo that shows the CustomerID, CompanyName, 
+ContactName, ContactTitle, Address, City,
+Country, Phone, OrderDate, RequiredDate, ShippedDate 
+from the customers and orders table. HINT: Create a View.*/
+
+/*
+39. Change the name of the view you created from customerinfo to customer details.*/
+
+/*
+40. Create a view named ProductDetails that shows the ProductID, CompanyName, 
+ProductName, CategoryName, Description,
+QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, 
+Discontinued from the supplier, products and
+categories tables. HINT: Create a View*/
+
+/*
+41. Drop the customer details view.*/
+
+/*
+42. Create a report that fetch the first 5 character of categoryName from the category tables
+ and renamed as ShortInfo*/
+
+ /*
+43. Create a copy of the shipper table as shippers_duplicate. Then insert a copy of shippers data into the new table HINT: Create
+a Table, use the LIKE Statement and INSERT INTO statement. */

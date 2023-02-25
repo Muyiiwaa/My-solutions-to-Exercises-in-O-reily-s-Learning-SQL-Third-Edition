@@ -295,21 +295,41 @@ from employees;
 A as the second alphabet in their
 Contactname.*/
 
+select contactname
+from customers
+where not ContactName like '_a%';
+
 /*
 32. Create a report that shows the average UnitPrice rounded to the next whole number, 
 total price of UnitsInStock and
 maximum number of orders from the products table. 
 All saved as AveragePrice, TotalStock and MaxOrder respectively.*/
 
+select round(AVG(UnitPrice), -1) as `Average Price`, sum(UnitsInStock) as `Total Stock`, Max(QuantityPerUnit) as  Max_order
+from products;
+
+--this particular question is a little unclear
+
 /*
 33. Create a report that shows the SupplierID, CompanyName, CategoryName,
  ProductName and UnitPrice from the products,
 suppliers and categories table.*/
 
+select s.supplierid, s.CompanyName, c.categoryname, p.productname, p.unitprice
+from products p
+join categories c on p.categoryid = c.categoryid
+join suppliers s on s.supplierid = p.supplierid;
+
 /*
 34. Create a report that shows the CustomerID, sum of Freight, 
 from the orders table with sum of freight greater $200, grouped
 by CustomerID. HINT: you will need to use a Groupby and a Having statement.*/
+
+select customerid, sum(freight) as `sum of freight`
+from orders
+group by customerid
+having `sum of freight` > 200;
+
 
 /*
 35. Create a report that shows the OrderID ContactName, UnitPrice, Quantity, Discount from the order details, orders and

@@ -332,18 +332,46 @@ having `sum of freight` > 200;
 
 
 /*
-35. Create a report that shows the OrderID ContactName, UnitPrice, Quantity, Discount from the order details, orders and
+35. Create a report that shows the OrderID ContactName, UnitPrice, 
+Quantity, Discount from the order details, orders and
 customers table with discount given on every purchase.*/
+
+select o.orderid, c.ContactName, od.unitprice, od.Quantity, od.discount
+from orders o 
+join `order details` od on o.orderid = od.orderid
+join customers c on   o.customerid = c.customerid;
+
+
 
 /*
 36. Create a report that shows the EmployeeID, the LastName and FirstName as employee, 
 and the LastName and FirstName of
 who they report to as manager from the employees table sorted by Employee ID. HINT: This is a SelfJoin.*/
 
+select a.employeeid, concat(a.lastname, ' ', a.firstname) as employee, 
+concat(b.lastname, ' ', b.firstname) as manager
+from employees a
+join employees b on a.employeeid = b.reportsto
+ORDER BY employeeid;
+
+
 /*
 37. Create a report that shows the average, minimum and maximum UnitPrice
  of all products as AveragePrice, MinimumPrice
 and MaximumPrice respectively.*/
+
+--This query is also a little unclear so i am going to write it in the two best ways possible
+
+select productname, AVG(unitprice) as `Average Price`, MAX(unitprice) as `Max Price`,
+ MIN(unitprice) as `Min Price`
+ from products
+ GROUP BY productname;
+
+ --2
+
+select AVG(unitprice) as `Average Price`, MAX(unitprice) as `Max Price`,
+ MIN(unitprice) as `Min Price`
+ from products;
 
 /*
 38. Create a view named CustomerInfo that shows the CustomerID, CompanyName, 
@@ -351,8 +379,20 @@ ContactName, ContactTitle, Address, City,
 Country, Phone, OrderDate, RequiredDate, ShippedDate 
 from the customers and orders table. HINT: Create a View.*/
 
+
+create view customerinfo as
+select o.customerid, c.CompanyName,
+c.contactname, c.ContactTitle,c.address,c.city,c.country,c.phone,
+o.orderdate, o.RequiredDate,o.ShippedDate
+from orders o
+join customers c on o.customerid = c.customerid;
+
+
+
 /*
 39. Change the name of the view you created from customerinfo to customer details.*/
+
+RENAME table customerinfo to `customer details`;
 
 /*
 40. Create a view named ProductDetails that shows the ProductID, CompanyName, 
@@ -361,13 +401,95 @@ QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel,
 Discontinued from the supplier, products and
 categories tables. HINT: Create a View*/
 
+create view ProductDetails AS
+select p.productid, s.CompanyName,p.productname,c.categoryname,c.description, p.QuantityPerUnit,
+p.unitprice,p.UnitsInStock,p.UnitsOnOrder,p.ReorderLevel,p.Discontinued
+from products p
+join suppliers s on s.supplierid = p.supplierid
+join categories c on c.categoryid = p.categoryid; 
+
 /*
 41. Drop the customer details view.*/
+
+drop view `customer details`;
 
 /*
 42. Create a report that fetch the first 5 character of categoryName from the category tables
  and renamed as ShortInfo*/
 
+select categoryname, substring(categoryname, 1, 5) as shortinfo
+from categories;
+
+
  /*
 43. Create a copy of the shipper table as shippers_duplicate. Then insert a copy of shippers data into the new table HINT: Create
 a Table, use the LIKE Statement and INSERT INTO statement. */
+
+create table shippers_duplicate like shippers;
+insert into shippers_duplicate select * from shippers;
+
+
+ /*
+ 44. Create a select statement that outputs the following from the shippers_duplicate Table:*/
+
+ select * from shippers_duplicate;
+
+ /*
+ 45. Create a report that shows the CompanyName and ProductName
+  from all product in the Seafood category.*/
+ 
+select s.CompanyName, p.productname, p.categoryid
+from products p
+join suppliers s on s.supplierid = p.supplierid
+where categoryid in (select categoryid from categories where categoryname = 'Seafood');
+
+ 
+ 
+ 
+ /*
+ 46. Create a report that shows the CategoryID, CompanyName and ProductName 
+ from all product in the categoryID 5.*/
+
+select p.categoryid, s.CompanyName, p.productname
+from products p
+join suppliers s on p.supplierid = s.supplierid
+where categoryid = 5;
+
+
+ /*
+47. Delete the shippers_duplicate table.*/
+
+drop table shippers_duplicate;
+ /*
+48. Create a select statement that ouputs the following from the employees table.
+NB: The age might differ depending on the year you are attempting this query.*/
+
+select lastname, firstname, title, concat(round(datediff(CURRENT_DATE, BirthDate)/365, 0), ' ', 'years') as age
+from employees;
+
+
+ /*
+ 49. Create a report that the CompanyName and total number of orders by customer renamed as number of orders since
+Decemeber 31, 1994. Show number of Orders greater than 10.*/
+
+select c.CompanyName, count(o.orderid) as `No of orders since Decemeber 31, 1994`
+from orders o 
+join customers c on o.customerid = c.customerid
+where orderdate BETWEEN '1994-12-31' and CURRENT_DATE
+GROUP BY c.CompanyName
+having count(o.orderid) > 10;
+
+
+ /*
+ 50. Create a select statement that ouputs the following from the product table
+NB: It should return 77rows. */
+
+select concat(productname,' ','weighs/is',QuantityPerUnit,' ','and costs', ' ', '$',round(unitprice, 0)) as productinfo
+from products;
+order by productinfo
+limit 77;
+
+
+/*
+THIS FELT SUPER GOOOOOOOOD!!!!!!
+*/
